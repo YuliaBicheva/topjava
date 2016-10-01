@@ -56,13 +56,8 @@ public class UserMealsUtil {
     private static Map<LocalDate, Integer> summingCaloriesByDate(List<UserMeal> mealList) {
         Map<LocalDate, Integer> caloriesGroupByDate = new TreeMap<>();
         for(UserMeal um: mealList){
-            Integer sumCaloriesByDate = caloriesGroupByDate.get(um.getDateTime().toLocalDate());
-            if(sumCaloriesByDate == null){
-                sumCaloriesByDate  = um.getCalories();
-            }else{
-                sumCaloriesByDate += um.getCalories();
-            }
-            caloriesGroupByDate.put(um.getDateTime().toLocalDate(), sumCaloriesByDate);
+            LocalDate mealDate = um.getDateTime().toLocalDate();
+            caloriesGroupByDate.put(um.getDateTime().toLocalDate(), caloriesGroupByDate.getOrDefault(mealDate,0) + um.getCalories());
         }
         return  caloriesGroupByDate;
     }
