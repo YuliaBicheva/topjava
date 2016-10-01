@@ -30,4 +30,14 @@ public class UserMeal {
     public int getCalories() {
         return calories;
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("UserMeal{");
+        sb.append("dateTime=").append(dateTime);
+        sb.append(", description='").append(description).append('\'');
+        sb.append(", calories=").append(calories);
+        sb.append('}');
+        return sb.toString();
+    }
 }
