@@ -1,12 +1,17 @@
 package ru.javawebinar.topjava.web;
 
 import org.slf4j.Logger;
+import ru.javawebinar.topjava.Path;
+import ru.javawebinar.topjava.model.MealWithExceed;
+import ru.javawebinar.topjava.util.MealsUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalTime;
+import java.util.List;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -15,12 +20,30 @@ import static org.slf4j.LoggerFactory.getLogger;
  * Date: 19.08.2014
  */
 public class UserServlet extends HttpServlet {
+
     private static final Logger LOG = getLogger(UserServlet.class);
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        process(request, response);
+        LOG.debug("start execute");
+
         LOG.debug("redirect to userList");
 
 //        request.getRequestDispatcher("/userList.jsp").forward(request, response);
         response.sendRedirect("userList.jsp");
     }
+
+    private void process(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        LOG.debug("Execute main servlet method");
+        String forwardPath = Path.USER_LIST_PAGE;
+
+        List<MealWithExceed> mealWithExceeds = MealsUtil.getFilteredWithExceeded(new MealsUtil().meals, LocalTime.MIN, LocalTime.MAX, MealsUtil.DEFAULT_CALORIES);
+        request.setAttribute("mealsList", mealWithExceeds);
+        LOG.debug("Set attribute mealsList: mealWithExceeds {}", mealWithExceeds);
+
+        LOG.debug("Forward to {}", forwardPath);
+        request.getRequestDispatcher(forwardPath).forward(request,response);
+    }
+
+
 }
