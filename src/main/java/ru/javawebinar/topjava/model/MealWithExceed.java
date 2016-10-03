@@ -16,6 +16,11 @@ public class MealWithExceed  extends Base{
     private final boolean exceed;
 
     public MealWithExceed(LocalDateTime dateTime, String description, int calories, boolean exceed) {
+        this(null, dateTime, description, calories, exceed);
+    }
+
+    public MealWithExceed(Integer id,LocalDateTime dateTime, String description, int calories, boolean exceed) {
+        super(id);
         this.dateTime = dateTime;
         this.description = description;
         this.calories = calories;

@@ -9,9 +9,7 @@ import java.util.List;
  */
 public interface CRUDService<T extends Base> {
 
-    T save(T t);
-
-    void update(T t);
+    void saveOrUpdate(T t);
 
     void delete(Integer id);
 

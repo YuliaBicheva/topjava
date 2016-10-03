@@ -17,13 +17,9 @@ public class MealServiceImpl implements MealService {
         this.mealDao = new MealDaoImpl();
     }
 
-    @Override
-    public Meal save(Meal meal) {
-        return this.mealDao.saveOrUpdate(meal);
-    }
 
     @Override
-    public void update(Meal meal) {
+    public void saveOrUpdate(Meal meal) {
         this.mealDao.saveOrUpdate(meal);
     }
 

@@ -18,4 +18,8 @@ public class TimeUtil {
     public static String formatDate(LocalDateTime dateTime){
         return dateTime.format(FORMAT);
     }
+
+    public static String parseDate(LocalDateTime dateTime){
+        return dateTime.format(FORMAT);
+    }
 }

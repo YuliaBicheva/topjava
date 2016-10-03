@@ -9,11 +9,15 @@ import java.time.LocalTime;
  * 11.01.2015.
  */
 public class Meal extends Base{
-    private final LocalDateTime dateTime;
 
-    private final String description;
+    private LocalDateTime dateTime;
 
-    private final int calories;
+    private String description;
+
+    private int calories;
+
+    public Meal() {
+    }
 
     public Meal(LocalDateTime dateTime, String description, int calories) {
         this(null, dateTime, description,calories);

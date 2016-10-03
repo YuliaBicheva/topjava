@@ -6,13 +6,13 @@
     <display-name>Topjava</display-name>
 
     <servlet>
-        <servlet-name>userServlet</servlet-name>
-        <servlet-class>ru.javawebinar.topjava.web.UserServlet</servlet-class>
+        <servlet-name>userMealServlet</servlet-name>
+        <servlet-class>ru.javawebinar.topjava.web.UserMealServlet</servlet-class>
         <load-on-startup>0</load-on-startup>
     </servlet>
     <servlet-mapping>
-        <servlet-name>userServlet</servlet-name>
-        <url-pattern>/users</url-pattern>
+        <servlet-name>userMealServlet</servlet-name>
+        <url-pattern>/meals</url-pattern>
     </servlet-mapping>
 
 </web-app>
