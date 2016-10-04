@@ -1,3 +1,4 @@
+<%@ page import="ru.javawebinar.topjava.util.TimeUtil" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
@@ -33,7 +34,7 @@
         <input type="hidden" name="id" value="${meal.id}">
         <dl>
             <dt>DateTime:</dt>
-            <dd><input type="datetime-local" value="${meal.dateTime}" name="dateTime"></dd>
+            <input id="datetimepicker"  type="datetime-local" name="dateTime" value="<%= TimeUtil.toString(meal.getDateTime())%>"/>
         </dl>
         <dl>
             <dt>Description:</dt>
@@ -48,4 +49,13 @@
     </form>
 </section>
 </body>
+
+<link rel="stylesheet" type="text/css" href="<c:url value='/css/jquery.datetimepicker.min.css'/>" />
+<script src="<c:url value='/js/jquery.js'/>"></script>
+<script src="<c:url value='/js/jquery.datetimepicker.full.js'/>"></script>
+<script>
+    jQuery('#datetimepicker').datetimepicker({
+        format: 'Y-m-d H:i'
+    });
+</script>
 </html>

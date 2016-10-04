@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import ru.javawebinar.topjava.model.Meal;
+import ru.javawebinar.topjava.util.TimeUtil;
 import ru.javawebinar.topjava.web.meal.MealRestController;
 
 import javax.servlet.ServletConfig;
@@ -13,12 +14,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Objects;
 
 /**
- * User: gkislin
- * Date: 19.08.2014
+ * User: yulia
+ * Date: 04.10.2016
  */
 public class MealServlet extends HttpServlet {
     private static final Logger LOG = LoggerFactory.getLogger(MealServlet.class);
@@ -41,16 +44,37 @@ public class MealServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
-        String id = request.getParameter("id");
+        String action = request.getParameter("action");
 
-        Meal meal = new Meal(id.isEmpty() ? null : Integer.valueOf(id),
-                LocalDateTime.parse(request.getParameter("dateTime")),
-                request.getParameter("description"),
-                Integer.valueOf(request.getParameter("calories")));
+        if(action == null) {
+            String id = request.getParameter("id");
 
-        LOG.info(meal.isNew() ? "Create {}" : "Update {}", meal);
-        controller.save(meal);
-        response.sendRedirect("meals");
+            Meal meal = new Meal(id.isEmpty() ? null : Integer.valueOf(id),
+                    LocalDateTime.parse(request.getParameter("dateTime"), TimeUtil.DATE_TIME_FORMATTER),
+                    request.getParameter("description"),
+                    Integer.valueOf(request.getParameter("calories")));
+
+            LOG.info(meal.isNew() ? "Create {}" : "Update {}", meal);
+            controller.save(meal);
+            response.sendRedirect("meals");
+        }else if(action.equalsIgnoreCase("filter")){
+            String param = resetParam("startDate",request);
+            LocalDate startDate = param == null || param.isEmpty() ? LocalDate.MIN : TimeUtil.parseLocaleDate(param);
+            param = resetParam("endDate",request);
+            LocalDate endDate = param == null || param.isEmpty() ? LocalDate.MAX : TimeUtil.parseLocaleDate(param);
+            param = resetParam("startTime",request);
+            LocalTime startTime = param == null || param.isEmpty() ? LocalTime.MIN : TimeUtil.parseLocaleTime(param);
+            param = resetParam("endTime",request);
+            LocalTime endTime = param == null || param.isEmpty() ? LocalTime.MAX : TimeUtil.parseLocaleTime(param);
+            request.setAttribute("mealList", controller.getBetween(startDate, startTime, endDate, endTime));
+            request.getRequestDispatcher("/mealList.jsp").forward(request, response);
+        }
+    }
+
+    private String resetParam(String param, HttpServletRequest request) {
+        String value = request.getParameter(param);
+        request.setAttribute(param, value);
+        return value;
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

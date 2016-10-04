@@ -21,6 +21,19 @@
     <h3>Meal list</h3>
     <a href="meals?action=create">Add Meal</a>
     <hr>
+
+    <form method="post" action="meals?action=filter">
+        <label>Start date: </label>
+        <input class="datetimepicker date" type="datetime-local" name="startDate" value="${startDate}">
+        <label>Start time: </label>
+        <input class="datetimepicker time" type="datetime-local" name="startTime" value="${startTime}">
+        <label>End date: </label>
+        <input class="datetimepicker date" type="datetime-local" name="endDate" value="${endDate}">
+        <label>End time: </label>
+        <input class="datetimepicker time" type="datetime-local" name="endTime" value="${endTime}">
+
+        <input type="submit" value="Filter"/>
+    </form>
     <table border="1" cellpadding="8" cellspacing="0">
         <thead>
         <tr>
@@ -48,4 +61,17 @@
     </table>
 </section>
 </body>
+<link rel="stylesheet" type="text/css" href="<c:url value='/css/jquery.datetimepicker.min.css'/>" />
+<script src="<c:url value='/js/jquery.js'/>"></script>
+<script src="<c:url value='/js/jquery.datetimepicker.full.js'/>"></script>
+<script>
+    jQuery('.datetimepicker.time').datetimepicker({
+        datepicker: false,
+        format: 'H:i'
+    });
+    jQuery('.datetimepicker.date').datetimepicker({
+        timepicker: false,
+        format: 'Y-m-d'
+    });
+</script>
 </html>

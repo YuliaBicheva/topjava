@@ -6,10 +6,13 @@ import org.springframework.stereotype.Repository;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
 import ru.javawebinar.topjava.util.MealsUtil;
+import ru.javawebinar.topjava.util.TimeUtil;
 
+import java.time.LocalDate;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 /**
  * GKislin
@@ -57,6 +60,18 @@ public class InMemoryMealRepositoryImpl implements MealRepository {
         List<Meal> usersMealList = repository.get(userId) == null ? Collections.EMPTY_LIST : new ArrayList<>(repository.get(userId).values());
         Collections.sort(usersMealList);
         return usersMealList;
+    }
+
+    @Override
+    public List<Meal> getBetween(int userId, LocalDate startDate, LocalDate endDate) {
+        LOG.info("getAll by userId {}", userId);
+        Map<Integer, Meal> integerMealMap = repository.get(userId);
+        if(integerMealMap == null){
+            return Collections.EMPTY_LIST;
+        }
+        return repository.get(userId).values().stream()
+                .filter(m -> TimeUtil.isBetween(m.getDateTime().toLocalDate(),startDate,endDate))
+                .collect(Collectors.toList());
     }
 }
 

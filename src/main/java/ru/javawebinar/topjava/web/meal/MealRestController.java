@@ -10,6 +10,8 @@ import ru.javawebinar.topjava.model.to.MealWithExceed;
 import ru.javawebinar.topjava.service.MealService;
 import ru.javawebinar.topjava.util.MealsUtil;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 /**
@@ -34,6 +36,13 @@ public class MealRestController {
         LOG.debug("AuthorizedUser id = {}", AuthorizedUser.id());
         LOG.debug("Service {}", service);
         return MealsUtil.getWithExceeded(service.getAll(AuthorizedUser.id()), AuthorizedUser.getCaloriesPerDay());
+    }
+
+    public List<MealWithExceed> getBetween(LocalDate startDate, LocalTime startTime, LocalDate endDate, LocalTime endTime) {
+        LOG.info("getAll");
+        LOG.debug("AuthorizedUser id = {}", AuthorizedUser.id());
+        LOG.debug("Service {}", service);
+        return MealsUtil.getFilteredWithExceeded(service.getBetween(AuthorizedUser.id(), startDate, endDate), startTime, endTime, AuthorizedUser.getCaloriesPerDay());
     }
 
     public void delete(int id) {

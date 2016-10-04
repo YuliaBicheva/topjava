@@ -9,6 +9,7 @@ import ru.javawebinar.topjava.repository.MealRepository;
 import ru.javawebinar.topjava.util.exception.ExceptionUtil;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -33,6 +34,12 @@ public class MealServiceImpl implements MealService {
     public List<Meal> getAll(int userId) throws NotFoundException {
         LOG.debug("getAll() by userId {}", userId);
         return repository.getAll(userId);
+    }
+
+    @Override
+    public List<Meal> getBetween(int userId, LocalDate startDate, LocalDate endDate) throws NotFoundException {
+        LOG.debug("getBeetwenl() by userId {} beetwen {} and {}", userId, startDate, endDate);
+        return repository.getBetween(userId, startDate, endDate);
     }
 
     @Override
