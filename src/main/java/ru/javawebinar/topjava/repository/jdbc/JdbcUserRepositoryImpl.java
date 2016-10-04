@@ -1,5 +1,7 @@
 package ru.javawebinar.topjava.repository.jdbc;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -21,6 +23,8 @@ import java.util.List;
 
 @Repository
 public class JdbcUserRepositoryImpl implements UserRepository {
+
+    private static final Logger LOG = LoggerFactory.getLogger(JdbcUserRepositoryImpl.class);
 
     private static final BeanPropertyRowMapper<User> ROW_MAPPER = BeanPropertyRowMapper.newInstance(User.class);
 
@@ -63,7 +67,9 @@ public class JdbcUserRepositoryImpl implements UserRepository {
 
     @Override
     public boolean delete(int id) {
-        return jdbcTemplate.update("DELETE FROM users WHERE id=?", id) != 0;
+        int rows = jdbcTemplate.update("DELETE FROM users WHERE id=?", id);
+        LOG.debug("{} row(s) deleted", rows);
+        return rows != 0;
     }
 
     @Override
