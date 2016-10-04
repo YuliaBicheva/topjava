@@ -8,8 +8,7 @@ import java.time.LocalTime;
  * GKislin
  * 11.01.2015.
  */
-public class Meal {
-    private Integer id;
+public class Meal extends BaseEntity implements Comparable<Meal>{
 
     private final LocalDateTime dateTime;
 
@@ -22,18 +21,10 @@ public class Meal {
     }
 
     public Meal(Integer id, LocalDateTime dateTime, String description, int calories) {
-        this.id = id;
+        super(id);
         this.dateTime = dateTime;
         this.description = description;
         this.calories = calories;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public LocalDateTime getDateTime() {
@@ -63,10 +54,15 @@ public class Meal {
     @Override
     public String toString() {
         return "Meal{" +
-                "id=" + id +
+                "getId()=" + getId() +
                 ", dateTime=" + dateTime +
                 ", description='" + description + '\'' +
                 ", calories=" + calories +
                 '}';
+    }
+
+    @Override
+    public int compareTo(Meal meal) {
+        return this.getDateTime().compareTo(meal.getDateTime());
     }
 }

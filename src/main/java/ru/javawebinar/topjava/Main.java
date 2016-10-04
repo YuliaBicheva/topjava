@@ -1,5 +1,9 @@
 package ru.javawebinar.topjava;
 
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import ru.javawebinar.topjava.web.meal.MealRestController;
+
 /**
  * User: gkislin
  * Date: 05.08.2015
@@ -9,6 +13,9 @@ package ru.javawebinar.topjava;
  */
 public class Main {
     public static void main(String[] args) {
-        System.out.format("Hello Topjava Enterprise!");
+        ConfigurableApplicationContext ctx =
+                new ClassPathXmlApplicationContext("classpath:spring/spring-app.xml");
+        MealRestController controller = ctx.getBean(MealRestController.class);
+        controller.getAll();
     }
 }

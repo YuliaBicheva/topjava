@@ -1,4 +1,6 @@
-package ru.javawebinar.topjava.model;
+package ru.javawebinar.topjava.model.to;
+
+import ru.javawebinar.topjava.model.BaseEntity;
 
 import java.time.LocalDateTime;
 
@@ -6,8 +8,7 @@ import java.time.LocalDateTime;
  * GKislin
  * 11.01.2015.
  */
-public class MealWithExceed {
-    private final Integer id;
+public class MealWithExceed extends BaseEntity {
 
     private final LocalDateTime dateTime;
 
@@ -18,7 +19,7 @@ public class MealWithExceed {
     private final boolean exceed;
 
     public MealWithExceed(Integer id, LocalDateTime dateTime, String description, int calories, boolean exceed) {
-        this.id = id;
+        super(id);
         this.dateTime = dateTime;
         this.description = description;
         this.calories = calories;
