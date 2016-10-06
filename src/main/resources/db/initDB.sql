@@ -32,7 +32,7 @@ CREATE TABLE meals
   id         INTEGER PRIMARY KEY DEFAULT nextval('global_seq_meal'),
   user_id    INTEGER NOT NULL,
   date_time  TIMESTAMP NOT NULL,
-  desription VARCHAR DEFAULT 'description',
+  description VARCHAR DEFAULT 'description',
   calories   INTEGER DEFAULT 2000 NOT NULL,
   FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
