@@ -56,16 +56,19 @@ public class JdbcMealRepositoryImpl implements MealRepository {
             Number returnedKey = insertUser.executeAndReturnKey(mealMap);
             meal.setId(returnedKey.intValue());
         }else{
-            namedParameterJdbcTemplate.update(
-                    "UPDATE meals SET user_id:=userId, date_time:=dateTime, description:=description, " +
-                            "calories:=calories WHERE id:=id",mealMap);
+            int rows = namedParameterJdbcTemplate.update(
+                    "UPDATE meals SET date_time=:dateTime, description=:description, " +
+                            "calories=:calories WHERE id=:id AND user_id=:userId",mealMap);
+            if(rows == 0){
+                meal = null;
+            }
         }
         return meal;
     }
 
     @Override
     public boolean delete(int id, int userId) {
-        return jdbcTemplate.update("DELETE FROM meals WHERE id=? AND user_id=?", ROW_MAPPER, id, userId) != 0;
+        return jdbcTemplate.update("DELETE FROM meals WHERE id=? AND user_id=?", id, userId) != 0;
     }
 
     @Override
@@ -76,25 +79,15 @@ public class JdbcMealRepositoryImpl implements MealRepository {
 
     @Override
     public List<Meal> getAll(int userId) {
-        List<Meal> meals = jdbcTemplate.query("SELECT id, date_time as dateTime, description, calories FROM meals WHERE user_id=?",ROW_MAPPER, userId);
-        LOG.debug("Meals list {}" + meals);
-        if(meals == null || meals.isEmpty()){
-            meals = Collections.emptyList();
-        }else {
-            Collections.sort(meals);
-        }
+        List<Meal> meals = jdbcTemplate.query("SELECT id, date_time, description, calories FROM meals WHERE user_id=?",ROW_MAPPER, userId);
+        Collections.sort(meals);
         return meals;
     }
 
     @Override
     public List<Meal> getBetween(LocalDateTime startDate, LocalDateTime endDate, int userId) {
-//        List<Meal> meals = jdbcTemplate.query("SELECT id, date_time, description, calories FROM meals WHERE user_id=? AND date_time BETWEEN ? AND ?", ROW_MAPPER, userId, startDate, endDate);
         List<Meal> meals = jdbcTemplate.query("SELECT id, date_time, description, calories FROM meals WHERE user_id=? AND date_time BETWEEN ? AND ?", ROW_MAPPER, userId, startDate, endDate);
-        if(meals == null || meals.isEmpty()){
-            meals = Collections.emptyList();
-        }else {
-            Collections.sort(meals);
-        }
+        Collections.sort(meals);
         return meals;
     }
 }

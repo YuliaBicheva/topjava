@@ -30,6 +30,10 @@ public class Meal extends BaseEntity implements Comparable<Meal>{
         this.calories = calories;
     }
 
+    public Meal(Meal meal) {
+        this(meal.getId(), meal.getDateTime(), meal.getDescription(), meal.getCalories());
+    }
+
     public LocalDateTime getDateTime() {
         return dateTime;
     }

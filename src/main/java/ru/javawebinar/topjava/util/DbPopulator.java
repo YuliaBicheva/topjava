@@ -23,6 +23,7 @@ public class DbPopulator extends ResourceDatabasePopulator {
     }
 
     public void execute() {
+        setContinueOnError(true);
         DatabasePopulatorUtils.execute(this, dataSource);
     }
 }
