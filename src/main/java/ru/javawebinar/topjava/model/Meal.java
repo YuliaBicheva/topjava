@@ -4,6 +4,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import javax.validation.constraints.Digits;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -14,6 +15,7 @@ import java.time.LocalTime;
  */
 
 @NamedQueries({
+        @NamedQuery(name = Meal.UPDATE, query = "UPDATE Meal m SET m.dateTime=:dateTime, m.description=:description, m.calories=:calories WHERE m.id=:id AND m.user.id=:userId"),
         @NamedQuery(name = Meal.DELETE, query = "DELETE FROM Meal m WHERE m.id=:id AND m.user.id=:userId"),
         @NamedQuery(name = Meal.GET, query = "SELECT m FROM Meal m WHERE m.id=:id AND m.user.id=:userId"),
         @NamedQuery(name = Meal.ALL_SORTED, query = "SELECT m FROM Meal m WHERE m.user.id=:userId ORDER BY m.dateTime DESC"),
@@ -23,25 +25,26 @@ import java.time.LocalTime;
 @Table(name = "meals")
 public class Meal extends BaseEntity {
 
+    public static final String UPDATE = "Meal.update";
     public static final String DELETE = "Meal.delete";
     public static final String ALL_SORTED = "Meal.getAllSorted";
     public static final String BETWEEN_SORTED = "Meal.getBetweenSorted";
     public static final String GET = "Meal.get";
 
-    @Column(name = "date_time", columnDefinition = "timestamp default now()")
-    @NotEmpty
+    @NotNull
+    @Column(name = "date_time", nullable = false)
     private LocalDateTime dateTime;
 
     @Column(name = "description")
     @NotEmpty
     private String description;
 
+    @NotNull
     @Column(name = "calories", columnDefinition = "default 2000")
-    @NotEmpty
     @Digits(fraction = 0, integer = 4)
     private int calories;
 
-    @Column(name = "user_id")
+//    @Column(name = "user_id")
 //    @CollectionTable(name = "users", joinColumns = @JoinColumn(name = "id"))
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
