@@ -22,43 +22,44 @@ import java.util.List;
 public class JpaMealRepositoryImpl implements MealRepository {
 
     @PersistenceContext
-    private EntityManager entityManager;
+    private EntityManager em;
 
     @Override
     @Transactional
     public Meal save(Meal meal, int userId) {
-        User user = entityManager.getReference(User.class, userId);
+        User user = em.getReference(User.class, userId);
         meal.setUser(user);
         if(meal.isNew()){
-            entityManager.persist(meal);
+            em.persist(meal);
             return meal;
         }else{
-            return entityManager.merge(meal);
+            return em.merge(meal);
         }
     }
 
     @Override
+    @Transactional
     public boolean delete(int id, int userId) {
-        return entityManager.createNamedQuery(Meal.DELETE).
+        return em.createNamedQuery(Meal.DELETE).
                 setParameter("id",id).
                 setParameter("userId",userId).executeUpdate() != 0;
     }
 
     @Override
     public Meal get(int id, int userId) {
-        List<Meal> meals = entityManager.createNamedQuery(Meal.GET, Meal.class).setParameter("id",id).setParameter("user_id",userId).getResultList();
+        List<Meal> meals = em.createNamedQuery(Meal.GET, Meal.class).setParameter("id",id).setParameter("userId",userId).getResultList();
         return DataAccessUtils.singleResult(meals);
     }
 
     @Override
     public List<Meal> getAll(int userId) {
-        return entityManager.createNamedQuery(Meal.ALL_SORTED, Meal.class).setParameter("user_id",userId).getResultList();
+        return em.createNamedQuery(Meal.ALL_SORTED, Meal.class).setParameter("userId",userId).getResultList();
     }
 
     @Override
     public List<Meal> getBetween(LocalDateTime startDate, LocalDateTime endDate, int userId) {
-        return entityManager.createNamedQuery(Meal.BETWEEN_SORTED, Meal.class).
-                setParameter("user_id",userId).
+        return em.createNamedQuery(Meal.BETWEEN_SORTED, Meal.class).
+                setParameter("userId",userId).
                 setParameter(1,startDate).
                 setParameter(2, endDate).
                 getResultList();

@@ -16,8 +16,8 @@ import java.time.LocalTime;
 @NamedQueries({
         @NamedQuery(name = Meal.DELETE, query = "DELETE FROM Meal m WHERE m.id=:id AND m.user.id=:userId"),
         @NamedQuery(name = Meal.GET, query = "SELECT m FROM Meal m WHERE m.id=:id AND m.user.id=:userId"),
-        @NamedQuery(name = Meal.ALL_SORTED, query = "SELECT m FROM Meal m WHERE m.user.id=:userId ORDER BY m.date_time DESC"),
-        @NamedQuery(name = Meal.BETWEEN_SORTED, query = "SELECT m FROM Meal m WHERE m.user.id=:userId AND m.date_time BETWEEN ?1 AND ?2 ORDER BY m.date_time DESC")
+        @NamedQuery(name = Meal.ALL_SORTED, query = "SELECT m FROM Meal m WHERE m.user.id=:userId ORDER BY m.dateTime DESC"),
+        @NamedQuery(name = Meal.BETWEEN_SORTED, query = "SELECT m FROM Meal m WHERE m.user.id=:userId AND m.dateTime BETWEEN ?1 AND ?2 ORDER BY m.dateTime DESC")
 })
 @Entity
 @Table(name = "meals")
@@ -42,7 +42,7 @@ public class Meal extends BaseEntity {
     private int calories;
 
     @Column(name = "user_id")
-    @CollectionTable(name = "users", joinColumns = @JoinColumn(name = "id"))
+//    @CollectionTable(name = "users", joinColumns = @JoinColumn(name = "id"))
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
